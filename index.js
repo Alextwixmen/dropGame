@@ -5,6 +5,8 @@ const blueField = document.querySelector(".blueField");
 const gameField = document.querySelector(".gameContainer");
 const redDropZone = document.querySelector(".droppeRedZone");
 const blueDropZone = document.querySelector(".droppeBlueZone");
+const timer = document.querySelector(".timer");
+const seconds = document.querySelector(".seconds");
 circles.forEach((element) => {
   element.addEventListener("dragstart", handlerDragStart);
   element.addEventListener("dragend", handlerDragEnd);
@@ -73,7 +75,13 @@ function handlerDrop(event) {
 setInterval(function () {
   detectPlaceForCircle(gameField);
 }, 1000);
+let timerNumber = detectGameTime();
 function detectPlaceForCircle(gameField) {
+  if (!timerNumber()) {
+    blueDropZone.remove();
+    redDropZone.remove();
+    return;
+  }
   let int = getRandomInt(0, 1);
   let coordinatesForCircle;
   let typeOfCircle;
@@ -130,4 +138,26 @@ function detectRandomCoordinates(heightOfField, widthOfField) {
   objWithRandomCoordinates.randomLeft += randomLeft;
   objWithRandomCoordinates.randomTop += randomTop;
   return objWithRandomCoordinates;
+}
+
+function detectGameTime() {
+  let number = 60;
+  return function () {
+    if (number != 0) {
+      seconds.innerHTML = --number;
+      if (number > 40) {
+        console.log("больше 40-ка");
+        seconds.style.color = "green";
+      }
+      if (number > 15 && number < 40) {
+        seconds.style.color = "orange";
+      }
+      if (number < 15) {
+        seconds.style.color = "red";
+      }
+      return true;
+    } else {
+      return false;
+    }
+  };
 }
