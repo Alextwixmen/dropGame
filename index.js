@@ -155,6 +155,9 @@ function detectGameTime() {
       if (number < 15) {
         seconds.style.color = "red";
       }
+      if (number === 0) {
+        seconds.innerHTML = "game over";
+      }
       return true;
     } else {
       return false;
