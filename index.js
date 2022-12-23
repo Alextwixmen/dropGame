@@ -53,7 +53,6 @@ function handlerDrop(event) {
         element.getAttribute("data-color") ===
         redField.getAttribute("data-color")
       ) {
-        console.log("1");
         copyOffElement = element.cloneNode(true);
         copyOffElement.classList.add("colorOfWingRed");
         redField.appendChild(copyOffElement);
@@ -72,40 +71,60 @@ function handlerDrop(event) {
 }
 
 setInterval(function () {
-  detectPlaceForRedCircle(gameField);
+  detectPlaceForCircle(gameField);
 }, 1000);
-function detectPlaceForRedCircle(gameField) {
+function detectPlaceForCircle(gameField) {
+  let int = getRandomInt(0, 1);
+  let coordinatesForCircle;
+  let typeOfCircle;
   let coodrinatesOfField = gameField.getBoundingClientRect();
-  let coordinatesOfRedZone = redDropZone.getBoundingClientRect();
-  let coordinatesOfBlueZone = blueDropZone.getBoundingClientRect();
   let heightOfField = coodrinatesOfField.height;
   let widthOfField = coodrinatesOfField.width;
+  let coordinatesOfRedZone = redDropZone.getBoundingClientRect();
+  let coordinatesOfBlueZone = blueDropZone.getBoundingClientRect();
   let coorditanates = detectRandomCoordinates(heightOfField, widthOfField);
+  if (int) {
+    typeOfCircle = blueDropZone;
+    coordinatesForCircle = blueDropZone.getBoundingClientRect();
+    redDropZone.classList.remove("visibility");
+    blueDropZone.classList.add("visibility");
+  } else {
+    typeOfCircle = redDropZone;
+    coordinatesForCircle = redDropZone.getBoundingClientRect();
+    blueDropZone.classList.remove("visibility");
+    redDropZone.classList.add("visibility");
+  }
   if (
-    coorditanates.randomLeft + coordinatesOfBlueZone.width >
+    coorditanates.randomLeft + coordinatesForCircle.width >
     coodrinatesOfField.width
   ) {
-    blueDropZone.style.left =
-      coodrinatesOfField.width - coordinatesOfBlueZone.width + "px";
+    typeOfCircle.style.left =
+      coodrinatesOfField.width - coordinatesForCircle.width + "px";
   } else {
-    blueDropZone.style.left = coorditanates.randomLeft + "px";
+    typeOfCircle.style.left = coorditanates.randomLeft + "px";
   }
   if (
-    coorditanates.randomTop + coordinatesOfBlueZone.height >
+    coorditanates.randomTop + coordinatesForCircle.height >
     coodrinatesOfField.height
   ) {
-    blueDropZone.style.left =
-      coodrinatesOfField.height - coordinatesOfBlueZone.height + "px";
+    typeOfCircle.style.left =
+      coodrinatesOfField.height - coordinatesForCircle.height + "px";
   } else {
-    blueDropZone.style.top = coorditanates.randomTop + "px";
+    typeOfCircle.style.top = coorditanates.randomTop + "px";
   }
 }
+function getRandomInt(min, max) {
+  // 0 - красный кружок, 1 - синий кружок;
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function detectRandomCoordinates(heightOfField, widthOfField) {
   let objWithRandomCoordinates = {
     randomLeft: 0,
     randomTop: 0,
   };
-
   randomLeft = Math.random() * (widthOfField - 0) + 0;
   randomTop = Math.random() * (heightOfField - 0) + 0;
   objWithRandomCoordinates.randomLeft += randomLeft;

@@ -11,9 +11,11 @@
 }
 .droppeRedZone{
     border: 2px solid red;
+    visibility: hidden;
 }
 .droppeBlueZone{
     border: 2px solid blueviolet;
+    visibility: hidden;
 }
 .gameContainer{
     width: 100%;
@@ -77,4 +79,7 @@
 .colorOfWingBlue{
     background-color: blueviolet;
     opacity: 1;
+}
+.visibility{
+    visibility: visible;
 }
