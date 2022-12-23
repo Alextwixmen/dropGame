@@ -5,6 +5,10 @@ const blueField = document.querySelector(".blueField");
 const gameField = document.querySelector(".gameContainer");
 const redDropZone = document.querySelector(".droppeRedZone");
 const blueDropZone = document.querySelector(".droppeBlueZone");
+const startRedZone = document.querySelector(".startRedZone");
+const startBlueZone = document.querySelector(".startBlueZone");
+let redLength = startRedZone.children.length;
+let blueLength = startBlueZone.children.length;
 const timer = document.querySelector(".timer");
 const seconds = document.querySelector(".seconds");
 circles.forEach((element) => {
@@ -27,7 +31,6 @@ function handlerDragStart() {
 }
 
 function handlerDragEnd(event) {}
-
 function handlerDrag() {}
 function handlerDragleave(event) {}
 droppedZone.forEach((element) => {
@@ -88,8 +91,6 @@ function detectPlaceForCircle(gameField) {
   let coodrinatesOfField = gameField.getBoundingClientRect();
   let heightOfField = coodrinatesOfField.height;
   let widthOfField = coodrinatesOfField.width;
-  let coordinatesOfRedZone = redDropZone.getBoundingClientRect();
-  let coordinatesOfBlueZone = blueDropZone.getBoundingClientRect();
   let coorditanates = detectRandomCoordinates(heightOfField, widthOfField);
   if (int) {
     typeOfCircle = blueDropZone;
@@ -143,10 +144,16 @@ function detectRandomCoordinates(heightOfField, widthOfField) {
 function detectGameTime() {
   let number = 60;
   return function () {
+    let numberOfBlueCircle = startBlueZone.children.length;
+    let numberOfRedCircle = startRedZone.children.length;
+    if (numberOfBlueCircle === 0 && numberOfRedCircle === 0) {
+      seconds.innerHTML = "you won!";
+      seconds.style.color = "green";
+      return;
+    }
     if (number != 0) {
       seconds.innerHTML = --number;
       if (number > 40) {
-        console.log("больше 40-ка");
         seconds.style.color = "green";
       }
       if (number > 15 && number < 40) {
@@ -157,6 +164,7 @@ function detectGameTime() {
       }
       if (number === 0) {
         seconds.innerHTML = "game over";
+        return;
       }
       return true;
     } else {
